@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="js/Zadacha.js" type="text/javascript"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+        <script>$(document).ready(function(){$(".out-botton").click(function(){$(this).next().slideToggle("fast"); });});</script>
+
+    </head>
+    <body>
+        <div>
+            <script>
+                myZadacha = new Zadacha();
+                myText = myZadacha.RandomText(myZadacha.QuestionTypeEnum.S100010_10);
+                document.writeln(myText); 
+            </script>
+        </div>
+    </body>
+</html>
