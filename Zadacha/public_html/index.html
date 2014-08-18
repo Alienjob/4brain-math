@@ -11,8 +11,9 @@
     <body>
         <div>
             <script>
-                document.writeln(Zadacha()); 
-                document.writeln(Zadacha()); 
+                myZadacha = new Zadacha();
+                myText = myZadacha.RandomText(myZadacha.QuestionTypeEnum.S100010_10);
+                document.writeln(myText); 
             </script>
         </div>
     </body>
