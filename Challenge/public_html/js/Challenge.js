@@ -93,6 +93,7 @@ function MathChallenge(_limit) {
     var elQuestion;
     var elIn;
     var elOldQuestion;
+    var elChallenge;
  
     
     function isNumber(n) {
@@ -170,8 +171,9 @@ function MathChallenge(_limit) {
 
     function getPrimitiveQuestion(firstOperandLimit, secondOperandLimit, operatorLimit){
         
-        //firstOperandLimit ограничение на первый операнд. Структура из минимального и максимального значения. {MIN: x, MAX: X}
+        //firstOperandLimit ограничение на первый операнд. Структура из минимального и максимального значения. {MIN: x, MAX: X} 
         //secondOperandLimit ограничение на второй операнд. Структура из минимального и максимального значения. {MIN: x, MAX: X}
+        //Можно указать обязательную кратность - DIVISIBLE
         //operationLimit ограничение на оператор. Строка допустимых операторов "+-*/^!"
         
         var firstOperand = getRandomInt(firstOperandLimit.MIN, firstOperandLimit.MAX);
@@ -179,13 +181,10 @@ function MathChallenge(_limit) {
         var indexOperator = getRandomInt(1, 120)%operatorLimit.length;
         var operator = operatorLimit[indexOperator];
         
-        if (firstOperandLimit.DIVISIBLE !== undefined)
-        {
+        if (firstOperandLimit.DIVISIBLE !== undefined){
             firstOperand = firstOperand - firstOperand % firstOperandLimit.DIVISIBLE;
         }
-        
-        if (secondOperandLimit.DIVISIBLE !== undefined)
-        {
+        if (secondOperandLimit.DIVISIBLE !== undefined){
             secondOperand = secondOperand - secondOperand % secondOperandLimit.DIVISIBLE;
         }
 
@@ -194,8 +193,8 @@ function MathChallenge(_limit) {
     };
 
     function getHeader(){
-        var result = '<style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
-        return result + '<h3>' + Header + '</h3> <div class="MathChallenge">';
+        var result = ' <div id = Challenge_' + UID + ' class="MathChallenge"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
+        return result + '<h3>' + Header + '</h3>';
     };
 
     function getQuestion(text){
@@ -213,6 +212,10 @@ function MathChallenge(_limit) {
 
     function refresh(){
         elOldQuestion.innerHTML = Question.toString() + " = " + Question.call() + " / ваш ответ " + elIn.value + ".";
+        if (+Question.call() === +elIn.value)
+            elChallenge.style.backgroundColor = '#F0FFF0';
+        else
+            elChallenge.style.backgroundColor = '#FFF5EE';
         Question = getRandomQuestion();
         elQuestion.innerHTML = Question.toString();
         elIn.value = "";
@@ -222,6 +225,7 @@ function MathChallenge(_limit) {
         elQuestion      = document.getElementById( 'Question_'    + UID);
         elIn            = document.getElementById( 'In_'          + UID);
         elOldQuestion   = document.getElementById( 'OldQuestion_' + UID);
+        elChallenge     = document.getElementById( 'Challenge_'   + UID);
         
         elIn.onchange = refresh;
     };
