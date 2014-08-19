@@ -80,7 +80,7 @@ function Challenge() {
 }
 
 //корневой класс для устного счета
-function MathChallenge() {
+function MathChallenge(_limit) {
     
     var Combo = 0;
     var Points = 0;
@@ -88,6 +88,7 @@ function MathChallenge() {
     var OldQuestion= "Здесь будет показан предыдущий вопрос.";
     var UID = createUUID();
     var Question = expression(0,0,'+');
+    var limit = _limit;
     
     var elQuestion;
     var elIn;
@@ -151,9 +152,18 @@ function MathChallenge() {
         };
         
     };
-    function getRandomQuestion(){
+    function getRandomQuestion (){
         
-        Question = getPrimitiveQuestion({MIN : 1, MAX : getRandomInt(5, 1000)}, {MIN : 1, MAX : getRandomInt(5, 1000)}, '+-*/');
+        if (limit === undefined)
+        {
+            var firstOperandLimit = ({MIN : 1, MAX : getRandomInt(5, 1000)});
+            var secondOperandLimit = ({MIN : 1, MAX : getRandomInt(5, 1000)});
+            var operatorLimit = '+-*/';
+            
+            limit = ({firstOperandLimit : firstOperandLimit, secondOperandLimit:secondOperandLimit, operatorLimit:operatorLimit});
+        }
+        
+        Question = getPrimitiveQuestion(limit.firstOperandLimit, limit.secondOperandLimit, limit.operatorLimit);
         return Question;
 
     };
@@ -169,6 +179,16 @@ function MathChallenge() {
         var indexOperator = getRandomInt(1, 120)%operatorLimit.length;
         var operator = operatorLimit[indexOperator];
         
+        if (firstOperandLimit.DIVISIBLE !== undefined)
+        {
+            firstOperand = firstOperand - firstOperand % firstOperandLimit.DIVISIBLE;
+        }
+        
+        if (secondOperandLimit.DIVISIBLE !== undefined)
+        {
+            secondOperand = secondOperand - secondOperand % secondOperandLimit.DIVISIBLE;
+        }
+
         return new expression(firstOperand, secondOperand, operator);
         
     };
@@ -185,19 +205,17 @@ function MathChallenge() {
         return result;
     };
 
-    function getEnd(Comment_text){
-        var result = '<div id = "' + 'OldQuestion_' + UID + '">' + Comment_text + '</div>';
+    function getEnd(){
+        var result = '<div id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div>';
         result += '</div>';
         return result;
     };
 
     function refresh(){
         elOldQuestion.innerHTML = Question.toString() + " = " + Question.call() + " / ваш ответ " + elIn.value + ".";
-        this.Question = getRandomQuestion();
+        Question = getRandomQuestion();
         elQuestion.innerHTML = Question.toString();
         elIn.value = "";
-        
-        //window.activeElement = elIn;
     }
     
     function findElements(){
@@ -208,7 +226,8 @@ function MathChallenge() {
         elIn.onchange = refresh;
     };
 
-    this.RandomText = function() {
+    this.RandomText = function(Header_text) {
+        Header = Header_text;
         var randomQuestion = getRandomQuestion();
         var result =  getHeader();
         result += getQuestion(randomQuestion.toString());
@@ -219,8 +238,81 @@ function MathChallenge() {
     onReady(findElements);
     
 };
+function MathChallenge_limitFactory() {
 
-
-
-
-
+    function getLimit(typeLimit){
+        var firstOperandLimit;
+        var secondOperandLimit;
+        var operatorLimit;
+        
+        if (typeLimit === 'minus789')        {
+            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            secondOperandLimit = ({MIN : 7, MAX : 9});
+            operatorLimit = '-';
+        }
+        if (typeLimit === 'multiply9')        {
+            firstOperandLimit = ({MIN : 10, MAX : 100});
+            secondOperandLimit = ({MIN : 9, MAX : 9});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiply2')        {
+            firstOperandLimit = ({MIN : 100, MAX : 10000});
+            secondOperandLimit = ({MIN : 2, MAX : 2});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiply4')        {
+            firstOperandLimit = ({MIN : 100, MAX : 5000});
+            secondOperandLimit = ({MIN : 4, MAX : 4});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiply8')        {
+            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            secondOperandLimit = ({MIN : 8, MAX : 8});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiply5')        {
+            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            secondOperandLimit = ({MIN : 5, MAX : 5});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiply25')        {
+            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            secondOperandLimit = ({MIN : 25, MAX : 25});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'division2')        {
+            var firstOperandLimit = ({MIN : 1, MAX : 10000, DIVISIBLE : 2});
+            var secondOperandLimit = ({MIN : 2, MAX : 2});
+            var operatorLimit = '/';
+            
+        }
+        if (typeLimit === 'division4')        {
+            firstOperandLimit = ({MIN : 100, MAX : 5000, DIVISIBLE : 4});
+            secondOperandLimit = ({MIN : 4, MAX : 4});
+            operatorLimit = '/';
+        }
+        if (typeLimit === 'division8')        {
+            firstOperandLimit = ({MIN : 100, MAX : 1000, DIVISIBLE : 8});
+            secondOperandLimit = ({MIN : 8, MAX : 8});
+            operatorLimit = '/';
+        }
+        if (typeLimit === 'multiply19')        {
+            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            secondOperandLimit = ({MIN : 1, MAX : 9});
+            operatorLimit = '*';
+        }
+        return ({firstOperandLimit : firstOperandLimit, secondOperandLimit:secondOperandLimit, operatorLimit:operatorLimit});
+    }
+    this.minus789 = getLimit('minus789');
+    this.multiply9 = getLimit('multiply9');
+    this.multiply2 = getLimit('multiply2');
+    this.multiply4 = getLimit('multiply4');
+    this.multiply8 = getLimit('multiply8');
+    this.multiply5 = getLimit('multiply5');
+    this.multiply25 = getLimit('multiply25');
+    this.division2 = getLimit('division2');
+    this.division4 = getLimit('division4');
+    this.multiply19 = getLimit('multiply19');
+    
+    
+};

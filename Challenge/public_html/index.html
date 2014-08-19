@@ -4,15 +4,31 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="js/Challenge.js" type="text/javascript"></script>
+        <!-- <script src="js/ragic.js" type="text/javascript"></script> -->
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     </head>
     <body>
         <div>
             <script>
-                myChallenge1 = new MathChallenge();
-                myChallenge2 = new MathChallenge();
-                document.writeln(myChallenge1.RandomText());
-                document.writeln(myChallenge2.RandomText());
+                var MC_LF = new MathChallenge_limitFactory();
+                var myChallenge1 = new MathChallenge(MC_LF.minus789);
+                var myChallenge2 = new MathChallenge(MC_LF.multiply2);
+                var myChallenge3 = new MathChallenge(MC_LF.multiply4);
+                var myChallenge4 = new MathChallenge(MC_LF.multiply8);
+                var myChallenge5 = new MathChallenge(MC_LF.multiply5);
+                var myChallenge6 = new MathChallenge(MC_LF.multiply25);
+                var myChallenge7 = new MathChallenge(MC_LF.multiply19);
+                var myChallenge8 = new MathChallenge(MC_LF.division2);
+                var myChallenge9 = new MathChallenge(MC_LF.division4);
+                document.writeln(myChallenge1.RandomText('Устный счет. Вычитание 7, 8, 9 '));
+                document.writeln(myChallenge2.RandomText('Устный счет. Умножение на 2'));
+                document.writeln(myChallenge3.RandomText('Устный счет. Умножение на 4'));
+                document.writeln(myChallenge4.RandomText('Устный счет. Умножение на 8'));
+                document.writeln(myChallenge5.RandomText('Устный счет. Умножение на 5'));
+                document.writeln(myChallenge6.RandomText('Устный счет. Умножение на 25'));
+                document.writeln(myChallenge7.RandomText('Устный счет. Умножение на однозначные числа'));
+                document.writeln(myChallenge8.RandomText('Деление на 2'));
+                document.writeln(myChallenge9.RandomText('Деление на 4'));
             </script>
         </div>
     </body>
