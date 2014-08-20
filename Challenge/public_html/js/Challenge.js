@@ -119,10 +119,13 @@ function Challenge() {
 //корневой класс для устного счета
 function MathChallenge(_limit) {
     
+    var MAXSCORE = 100;
+    
     var Combo = 0;
     var Score = 0;
     var lastTime = new Date(1000);
     var delayLimit = 30000;
+    var flDisabled = false;
     
     var Header = "Устный счет";
     var OldQuestion= "Здесь будет показан предыдущий вопрос.";
@@ -309,11 +312,21 @@ function MathChallenge(_limit) {
         if (Combo === 10)
             alert('поздравляем, вы отлично справились с упражнением ' + Header);
         
-        setCookie(Header, Score, 24*60*60*1000); // сохраняем результат на сутки
+        if (Score > 100)
+            disable();
         
+        setCookie(Header, Score, 20*60*60*1000); // сохраняем результат на 20 часов, 
+                                                  // чтобы на следующий день можно было в этоже время снова тренироваться 
+        
+    }
+    function disable(){
+        elIn.disabled = true;
+        elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня.';
     }
     function refreshScore(){
         elScore.innerHTML = Score;
+        if (Score > MAXSCORE)
+            flDisabled = true;
         for (var i = 0; i < Combo; i++)
             comboFlags[i].style.color = '#006400';
         for (var i = Combo; i < 10; i++)
@@ -326,6 +339,9 @@ function MathChallenge(_limit) {
         Question = getRandomQuestion();
         elQuestion.innerHTML = Question.toString();
         elIn.value = "";
+        if (flDisabled)
+            disable();
+
     }
     
     function findScore(){
@@ -361,6 +377,8 @@ function MathChallenge(_limit) {
         
         if (Score > 0)
             elChallenge.style.backgroundColor = '#F0FFF0';
+        if (flDisabled)
+            disable();
             
     };
 
@@ -369,8 +387,11 @@ function MathChallenge(_limit) {
 
         var cookie = getCookie(Header);
         if (cookie !== undefined)
-            if (+cookie > 0)
+            if (+cookie > 0){
                 Score = +cookie;
+            if (Score > MAXSCORE)
+                flDisabled = true;
+            }
         
         var randomQuestion = getRandomQuestion();
         var result =  getHeader();
