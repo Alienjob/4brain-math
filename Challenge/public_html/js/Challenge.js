@@ -74,6 +74,43 @@ function bindReady(handler){
 	*/
 }
 
+// возвращает cookie с именем name, если есть, если нет, то undefined
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+function setCookie(name, value, options) {
+  options = options || {};
+
+  var expires = options.expires;
+
+  if (typeof expires == "number" && expires) {
+    var d = new Date();
+    d.setTime(d.getTime() + expires*1000);
+    expires = options.expires = d;
+  }
+  if (expires && expires.toUTCString) { 
+  	options.expires = expires.toUTCString();
+  }
+
+  value = encodeURIComponent(value);
+
+  var updatedCookie = name + "=" + value;
+
+  for(var propName in options) {
+    updatedCookie += "; " + propName;
+    var propValue = options[propName];    
+    if (propValue !== true) { 
+      updatedCookie += "=" + propValue;
+     }
+  }
+
+  document.cookie = updatedCookie;
+}
+
 //протокласс
 function Challenge() {
     
@@ -210,7 +247,7 @@ function MathChallenge(_limit) {
 
     function getScore(){
         var result = ' <SPAN id = Score_' + UID +' > ';
-        result+= 0;
+        result+= Score;
         result+='</SPAN>';
         return result;
     };
@@ -272,6 +309,8 @@ function MathChallenge(_limit) {
         if (Combo === 10)
             alert('поздравляем, вы отлично справились с упражнением ' + Header);
         
+        setCookie(Header, Score, 24*60*60*1000); // сохраняем результат на сутки
+        
     }
     function refreshScore(){
         elScore.innerHTML = Score;
@@ -311,6 +350,7 @@ function MathChallenge(_limit) {
     };
 
     function findElements(){
+
         elQuestion      = document.getElementById( 'Question_'    + UID);
         elIn            = document.getElementById( 'In_'          + UID);
         elOldQuestion   = document.getElementById( 'OldQuestion_' + UID);
@@ -318,16 +358,27 @@ function MathChallenge(_limit) {
         findScore();
         
         elIn.onchange = refresh;
+        
+        if (Score > 0)
+            elChallenge.style.backgroundColor = '#F0FFF0';
+            
     };
 
     this.RandomText = function(Header_text) {
         Header = Header_text;
+
+        var cookie = getCookie(Header);
+        if (cookie !== undefined)
+            if (+cookie > 0)
+                Score = +cookie;
+        
         var randomQuestion = getRandomQuestion();
         var result =  getHeader();
         result += getQuestion(randomQuestion.toString());
         result += getEnd(OldQuestion);
         return result;
     };
+
     
     onReady(findElements);
     
