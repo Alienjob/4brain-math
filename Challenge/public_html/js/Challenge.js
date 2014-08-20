@@ -84,6 +84,9 @@ function MathChallenge(_limit) {
     
     var Combo = 0;
     var Score = 0;
+    var lastTime = new Date(1000);
+    var delayLimit = 30000;
+    
     var Header = "Устный счет";
     var OldQuestion= "Здесь будет показан предыдущий вопрос.";
     var UID = createUUID();
@@ -94,6 +97,9 @@ function MathChallenge(_limit) {
     var elIn;
     var elOldQuestion;
     var elChallenge;
+    var elScore;
+    var elCombo;
+    var comboFlags;
  
     
     function isNumber(n) {
@@ -195,14 +201,31 @@ function MathChallenge(_limit) {
     };
 
     function getScore(){
-        var result = ' <div id = Score_' + UID +' > ';
-        result+='</div>';
+        var result = ' <SPAN id = Score_' + UID +' > ';
+        result+= 0;
+        result+='</SPAN>';
+        return result;
+    };
+
+    function getCombo(){
+        var result = ' <SPAN id = Combo_' + UID +' > ';
+        result+= '<SPAN id = Combo1_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo2_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo3_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo4_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo5_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo6_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo7_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo8_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo9_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN id = Combo10_' + UID +' >' + 0 + '</SPAN>';
+        result+='</SPAN>';
         return result;
     };
 
     function getHeader(){
         var result = ' <div id = Challenge_' + UID + ' class="MathChallenge"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
-        return result + '<h3>Устный счет. ' + Header + '</h3>';
+        return result + '<h3>Устный счет. ' + Header + getCombo() + getScore() +'</h3>' ;
     };
 
     function getQuestion(text){
@@ -217,23 +240,74 @@ function MathChallenge(_limit) {
         result += '</div>';
         return result;
     };
-
-    function refresh(){
-        elOldQuestion.innerHTML = Question.toString() + " = " + Question.call() + " / ваш ответ " + elIn.value + ".";
-        if (+Question.call() === +elIn.value)
+    function verifyAnswer(){
+        var currentTime = new Date();
+        var delay = currentTime - lastTime;
+        lastTime = currentTime;
+        
+        var rightAnswer = Question.call();
+        var currentAnswer = +elIn.value;
+        
+        if (rightAnswer === currentAnswer){
             elChallenge.style.backgroundColor = '#F0FFF0';
-        else
+            if (delay < delayLimit)
+                Combo += 1;
+            else
+                Combo = 0;
+            var bonus = 1 + Combo * 2; 
+            Score += bonus;
+        }
+        else{
             elChallenge.style.backgroundColor = '#FFF5EE';
+            Combo = 0;
+        }
+        if (Combo === 10)
+            alert('поздравляем, вы отлично справились с упражнением ' + Header);
+        
+    }
+    function refreshScore(){
+        elScore.innerHTML = Score;
+        for (var i = 0; i < Combo; i++)
+            comboFlags[i].style.color = '#006400';
+        for (var i = Combo; i < 10; i++)
+            comboFlags[i].style.color = '#DCDCDC';
+    }
+    function refresh(){
+        verifyAnswer();
+        refreshScore();
+        elOldQuestion.innerHTML = Question.toString() + " = " + Question.call() + " / ваш ответ " + elIn.value + ".";
         Question = getRandomQuestion();
         elQuestion.innerHTML = Question.toString();
         elIn.value = "";
     }
     
+    function findScore(){
+        elScore         = document.getElementById( 'Score_'    + UID);
+        elCombo         = document.getElementById( 'Combo_'    + UID);
+        comboFlags = [
+        document.getElementById( 'Combo1_'    + UID),
+        document.getElementById( 'Combo2_'    + UID),
+        document.getElementById( 'Combo3_'    + UID),
+        document.getElementById( 'Combo4_'    + UID),
+        document.getElementById( 'Combo5_'    + UID),
+        document.getElementById( 'Combo6_'    + UID),
+        document.getElementById( 'Combo7_'    + UID),
+        document.getElementById( 'Combo8_'    + UID),
+        document.getElementById( 'Combo9_'    + UID),
+        document.getElementById( 'Combo10_'   + UID)
+        ];
+        for (var i = 0; i < 10; i++){
+            comboFlags[i].style.color = '#DCDCDC';
+            comboFlags[i].style.display = 'block-inline';
+        }
+    };
+
     function findElements(){
         elQuestion      = document.getElementById( 'Question_'    + UID);
         elIn            = document.getElementById( 'In_'          + UID);
         elOldQuestion   = document.getElementById( 'OldQuestion_' + UID);
         elChallenge     = document.getElementById( 'Challenge_'   + UID);
+        findScore();
         
         elIn.onchange = refresh;
     };
