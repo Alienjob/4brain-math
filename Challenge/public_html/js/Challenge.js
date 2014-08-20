@@ -123,6 +123,7 @@ function MathChallenge(_limit) {
     
     var Combo = 0;
     var Score = 0;
+    var bonus = 0;
     var lastTime = new Date(1000);
     var delayLimit = 30000;
     var flDisabled = false;
@@ -302,12 +303,13 @@ function MathChallenge(_limit) {
                 Combo += 1;
             else
                 Combo = 0;
-            var bonus = 1 + Combo * 2; 
+            bonus = 1 + Combo * 2; 
             Score += bonus;
         }
         else{
             elChallenge.style.backgroundColor = '#FFF5EE';
             Combo = 0;
+            bonus = 0;
         }
         if (Combo === 10)
             alert('поздравляем, вы отлично справились с упражнением ' + Header);
@@ -321,10 +323,14 @@ function MathChallenge(_limit) {
     }
     function disable(){
         elIn.disabled = true;
-        elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня.';
+        elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня. Чтобы разблокировать упражнение отправьте СМС с кодом .. или удалите cookie';
     }
     function refreshScore(){
-        elScore.innerHTML = Score;
+        if (bonus > 0)
+            elScore.innerHTML = Score + '(+' + bonus + ')';
+        else
+            elScore.innerHTML = Score;
+            
         if (Score > MAXSCORE)
             flDisabled = true;
         for (var i = 0; i < Combo; i++)
