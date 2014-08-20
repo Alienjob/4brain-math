@@ -83,7 +83,7 @@ function Challenge() {
 function MathChallenge(_limit) {
     
     var Combo = 0;
-    var Points = 0;
+    var Score = 0;
     var Header = "Устный счет";
     var OldQuestion= "Здесь будет показан предыдущий вопрос.";
     var UID = createUUID();
@@ -149,6 +149,8 @@ function MathChallenge(_limit) {
                 return o1 - o2;
             if (this.operator === '/')
                 return Math.floor(o1 / o2);
+            if (this.operator === '^')
+                return Math.pow(o1, o2);
             
         };
         
@@ -192,9 +194,15 @@ function MathChallenge(_limit) {
         
     };
 
+    function getScore(){
+        var result = ' <div id = Score_' + UID +' > ';
+        result+='</div>';
+        return result;
+    };
+
     function getHeader(){
         var result = ' <div id = Challenge_' + UID + ' class="MathChallenge"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
-        return result + '<h3>' + Header + '</h3>';
+        return result + '<h3>Устный счет. ' + Header + '</h3>';
     };
 
     function getQuestion(text){
@@ -305,6 +313,36 @@ function MathChallenge_limitFactory() {
             secondOperandLimit = ({MIN : 1, MAX : 9});
             operatorLimit = '*';
         }
+        if (typeLimit === 'multiplyXX')        {
+            firstOperandLimit = ({MIN : 20, MAX : 100});
+            secondOperandLimit = ({MIN : 20, MAX : 100});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiply11')        {
+            firstOperandLimit = ({MIN : 20, MAX : 100});
+            secondOperandLimit = ({MIN : 11, MAX : 11});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'multiplyXXX11')        {
+            firstOperandLimit = ({MIN : 200, MAX : 1000});
+            secondOperandLimit = ({MIN : 11, MAX : 11});
+            operatorLimit = '*';
+        }
+        if (typeLimit === 'squareX')        {
+            firstOperandLimit = ({MIN : 2, MAX : 9});
+            secondOperandLimit = ({MIN : 2, MAX : 2});
+            operatorLimit = '^';
+        }
+        if (typeLimit === 'squareXX')        {
+            firstOperandLimit = ({MIN : 10, MAX : 99});
+            secondOperandLimit = ({MIN : 2, MAX : 2});
+            operatorLimit = '^';
+        }
+        if (typeLimit === 'squareXXX')        {
+            firstOperandLimit = ({MIN : 100, MAX : 999});
+            secondOperandLimit = ({MIN : 2, MAX : 2});
+            operatorLimit = '^';
+        }
         return ({firstOperandLimit : firstOperandLimit, secondOperandLimit:secondOperandLimit, operatorLimit:operatorLimit});
     }
     this.minus789 = getLimit('minus789');
@@ -317,6 +355,13 @@ function MathChallenge_limitFactory() {
     this.division2 = getLimit('division2');
     this.division4 = getLimit('division4');
     this.multiply19 = getLimit('multiply19');
+    this.multiplyXX = getLimit('multiplyXX');
+    this.multiply11 = getLimit('multiply11');
+    this.multiplyXXX11 = getLimit('multiplyXXX11');
+    this.multiply25 = getLimit('multiply25');
+    this.squareX = getLimit('squareX');
+    this.squareXX = getLimit('squareXX');
+    this.squareXXX = getLimit('squareXXX');
     
     
 };
