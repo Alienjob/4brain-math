@@ -120,12 +120,12 @@ function Challenge() {
 function MathChallenge(_limit) {
     
     var MAXSCORE = 100;
+    var delayLimit = 30000;
     
     var Combo = 0;
     var Score = 0;
     var bonus = 0;
     var lastTime = new Date(1000);
-    var delayLimit = 30000;
     var flDisabled = false;
     
     var Header = "Устный счет";
@@ -274,13 +274,13 @@ function MathChallenge(_limit) {
 
     function getHeader(){
         var result = ' <div id = Challenge_' + UID + ' class="MathChallenge"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
-        return result + '<h3>Устный счет. ' + Header + getCombo() + getScore() +'</h3>' ;
+        return result + '<table><td height = "2"><h3>Устный счет.' + Header+ '</h3></td><td  height = "2" align="right" ><h3>' + getCombo() + getScore() +'</h3></td></table>' ;
     };
 
     function getQuestion(text){
         var result = ' <table><tr ><td style="padding: 5px 10px 5px 5px; ">';
         result += '<div  id = ' + 'Question_' + UID + '>' + text + '</div>';
-        result += '</td><td style="padding: 5px 10px 5px 5px;">Ваш ответ:<input id = "' + 'In_' + UID + '" type="text"/></td></tr> </table>';
+        result += '</td><td align="right"  style="padding: 5px 10px 5px 5px;">Ваш ответ:<input id = "' + 'In_' + UID + '" type="text"/></td></tr> </table>';
         return result;
     };
 
@@ -443,12 +443,12 @@ function MathChallenge_limitFactory() {
             operatorLimit = '*';
         }
         if (typeLimit === 'multiply5')        {
-            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            firstOperandLimit = ({MIN : 100, MAX : 1000, DIVISIBLE : 2});
             secondOperandLimit = ({MIN : 5, MAX : 5});
             operatorLimit = '*';
         }
         if (typeLimit === 'multiply25')        {
-            firstOperandLimit = ({MIN : 100, MAX : 1000});
+            firstOperandLimit = ({MIN : 100, MAX : 1000, DIVISIBLE : 4});
             secondOperandLimit = ({MIN : 25, MAX : 25});
             operatorLimit = '*';
         }
