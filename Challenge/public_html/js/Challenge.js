@@ -182,6 +182,7 @@ function MathChallenge(_limit) {
         //firstOperandLimit ограничение на первый операнд. Структура из минимального и максимального значения. {MIN: x, MAX: X} 
         //secondOperandLimit ограничение на второй операнд. Структура из минимального и максимального значения. {MIN: x, MAX: X}
         //Можно указать обязательную кратность - DIVISIBLE
+        //Можно указать цифры, которые будут дописаны к операнду - SUFFIX
         //operationLimit ограничение на оператор. Строка допустимых операторов "+-*/^!"
         
         var firstOperand = getRandomInt(firstOperandLimit.MIN, firstOperandLimit.MAX);
@@ -194,6 +195,13 @@ function MathChallenge(_limit) {
         }
         if (secondOperandLimit.DIVISIBLE !== undefined){
             secondOperand = secondOperand - secondOperand % secondOperandLimit.DIVISIBLE;
+        }
+
+        if (firstOperandLimit.SUFFIX !== undefined){
+            firstOperand = +(firstOperand.toString() + firstOperandLimit.SUFFIX.toString());
+        }
+        if (secondOperandLimit.SUFFIX !== undefined){
+            secondOperand = +(secondOperand.toString() + secondOperandLimit.SUFFIX.toString());
         }
 
         return new expression(firstOperand, secondOperand, operator);
@@ -418,7 +426,7 @@ function MathChallenge_limitFactory() {
             operatorLimit = '^';
         }
         if (typeLimit === 'squareX5')        {
-            firstOperandLimit = ({MIN : 10, MAX : 92, DIVISIBLE : 5});
+            firstOperandLimit = ({MIN : 1, MAX : 9, SUFFIX : 5});
             secondOperandLimit = ({MIN : 2, MAX : 2});
             operatorLimit = '^';
         }
@@ -441,6 +449,7 @@ function MathChallenge_limitFactory() {
     this.squareX = getLimit('squareX');
     this.squareXX = getLimit('squareXX');
     this.squareXXX = getLimit('squareXXX');
+    this.squareX5 = getLimit('squareX5');
     
     
 };
