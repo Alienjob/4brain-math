@@ -417,6 +417,11 @@ function MathChallenge_limitFactory() {
             secondOperandLimit = ({MIN : 2, MAX : 2});
             operatorLimit = '^';
         }
+        if (typeLimit === 'squareX5')        {
+            firstOperandLimit = ({MIN : 10, MAX : 92, DIVISIBLE : 5});
+            secondOperandLimit = ({MIN : 2, MAX : 2});
+            operatorLimit = '^';
+        }
         return ({firstOperandLimit : firstOperandLimit, secondOperandLimit:secondOperandLimit, operatorLimit:operatorLimit});
     }
     this.minus789 = getLimit('minus789');
