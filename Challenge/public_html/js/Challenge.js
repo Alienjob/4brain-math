@@ -141,8 +141,37 @@ function MathChallenge(_limit) {
     var elScore;
     var elCombo;
     var comboFlags;
- 
     
+    var elComboBar;
+    var comboBar;
+ 
+    function comboBar(){
+        result =  '<style type="text/css">\n\
+                my_progress_bar_wrapper {\n\
+                    border: 1px solid #000000;\n\
+                }\n\
+            </style>\n\
+            \n\
+            <div  style="width: 20; height: 20; margin: 0px auto;">\n\
+                <div  class = "Challenge_Combo_Bar" id="Combo_Bar_' + UID + '" style="position: relative; top: 45%; margin: 0px auto;"></div>\n\
+            </div>';
+            /*    
+            var timerId = null;
+            timerId = window.setInterval(function() {
+                    //myProgressBar.animationSmoothness = ProgressBar.AnimationSmoothness.Smooth1;
+
+                    if (myProgressBar.value >= myProgressBar.maxValue){
+                            myProgressBar.setValue(0);
+                    } else {
+                            myProgressBar.setValue(myProgressBar.value + 20);
+                    }
+
+            },
+            100);
+            */
+           return result;
+    }
+
     function isNumber(n) {
       return !isNaN(parseInt(n)) && isFinite(n);
     };
@@ -250,31 +279,19 @@ function MathChallenge(_limit) {
     };
 
     function getScore(){
-        var result = ' <SPAN class = "Challenge_score" id = Score_' + UID +' > ';
+        var result = ' <SPAN class = "Challenge_Score" id = Score_' + UID +' > ';
         result+= Score;
         result+='</SPAN>';
         return result;
     };
 
     function getCombo(){
-        var result = ' <SPAN class = "Challenge_combo_line" id = Combo_' + UID +' > ';
-        result+= '<SPAN class = "Challenge_combo_null" id = Combo1_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo2_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo3_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo4_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo5_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo6_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo7_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo8_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo9_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN class = "Challenge_combo_null"  id = Combo10_' + UID +' >' + 0 + '</SPAN>';
-        result+='</SPAN>';
-        return result;
+        return comboBar();
     };
 
     function getHeader(){
         var result = ' <div id = Challenge_' + UID + ' class="Challenge_Math"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
-        return result + '<table><td height = "2"><h3>Устный счет.' + Header+ '</h3></td><td  height = "2" align="right" ><h3>' + getCombo() + getScore() +'</h3></td></table>' ;
+        return result + '<table><td width = "40%"><h3>Устный счет.' + Header+ '</h3></td><td  width = "20%" align="right" >' + getCombo()+'</td><td  width = "10%" align="right" ><h3>' + getScore() +'</h3></td></table>' ;
     };
 
     function getQuestion(text){
@@ -333,10 +350,8 @@ function MathChallenge(_limit) {
             
         if (Score > MAXSCORE)
             flDisabled = true;
-        for (var i = 0; i < Combo; i++)
-            comboFlags[i].style.color = '#006400';
-        for (var i = Combo; i < 10; i++)
-            comboFlags[i].style.color = '#DCDCDC';
+        comboBar.labelText = Score + '(+' + bonus + ')';
+        comboBar.setValue(200/10*Combo);
     }
     function refresh(){
         verifyAnswer();
@@ -352,23 +367,27 @@ function MathChallenge(_limit) {
     
     function findScore(){
         elScore         = document.getElementById( 'Score_'    + UID);
-        elCombo         = document.getElementById( 'Combo_'    + UID);
-        comboFlags = [
-        document.getElementById( 'Combo1_'    + UID),
-        document.getElementById( 'Combo2_'    + UID),
-        document.getElementById( 'Combo3_'    + UID),
-        document.getElementById( 'Combo4_'    + UID),
-        document.getElementById( 'Combo5_'    + UID),
-        document.getElementById( 'Combo6_'    + UID),
-        document.getElementById( 'Combo7_'    + UID),
-        document.getElementById( 'Combo8_'    + UID),
-        document.getElementById( 'Combo9_'    + UID),
-        document.getElementById( 'Combo10_'   + UID)
-        ];
-        for (var i = 0; i < 10; i++){
-            comboFlags[i].style.color = '#DCDCDC';
-            comboFlags[i].style.display = 'block-inline';
-        }
+        
+        elComboBar         = document.getElementById( 'Combo_Bar_' + UID);
+        elComboBar.style.position = 'inline-block';
+        
+        comboBar = new ProgressBar('Combo_Bar_' + UID ,{
+                borderRadius: 10,
+                width: 200,
+                height: 20,
+                value: 0,
+                maxValue: 200,
+                showLabel: false,
+                extraClassName: {
+                        wrapper: 'my_progress_bar_wrapper'
+                },
+                orientation: ProgressBar.Orientation.Horizontal,
+                direction: ProgressBar.Direction.LeftToRight,
+                animationInterval: 50,
+                imageUrl: 'images/h_fg202.png',
+                backgroundUrl: 'images/h_bg3.png'
+            });
+
     };
 
     function findElements(){
