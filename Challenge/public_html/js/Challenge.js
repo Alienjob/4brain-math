@@ -139,36 +139,24 @@ function MathChallenge(_limit) {
     var elOldQuestion;
     var elChallenge;
     var elScore;
-    var elCombo;
-    var comboFlags;
     
     var elComboBar;
     var comboBar;
+    var elTimeBar;
+    var timeBar;
+    var timerId;
  
     function comboBar(){
-        result =  '<style type="text/css">\n\
-                my_progress_bar_wrapper {\n\
-                    border: 1px solid #000000;\n\
-                }\n\
-            </style>\n\
-            \n\
-            <div  style="width: 20; height: 20; margin: 0px auto;">\n\
-                <div  class = "Challenge_Combo_Bar" id="Combo_Bar_' + UID + '" style="position: relative; top: 45%; margin: 0px auto;"></div>\n\
+        var result =  '<div  style="width: 20; height: 20; margin: 0px auto;">\n\
+                <div  class = "Challenge_Combo_Bar" id="Combo_Bar_' + UID + '" style="position: relative; margin: 0px auto;"></div>\n\
             </div>';
-            /*    
-            var timerId = null;
-            timerId = window.setInterval(function() {
-                    //myProgressBar.animationSmoothness = ProgressBar.AnimationSmoothness.Smooth1;
+            return result;
+    }
 
-                    if (myProgressBar.value >= myProgressBar.maxValue){
-                            myProgressBar.setValue(0);
-                    } else {
-                            myProgressBar.setValue(myProgressBar.value + 20);
-                    }
-
-            },
-            100);
-            */
+    function timeBar(){
+        var result =  '<div  style="width: 20; height: 20; margin: 0px auto;">\n\
+                <div  class = "Challenge_Time_Bar" id="Time_Bar_' + UID + '" style="position: relative; top: 45%; margin: 0px auto;"></div>\n\
+            </div>';
            return result;
     }
 
@@ -286,26 +274,47 @@ function MathChallenge(_limit) {
     };
 
     function getCombo(){
-        return comboBar();
+        return timeBar() + comboBar();
     };
 
-    function getHeader(){
-        var result = ' <div id = Challenge_' + UID + ' class="Challenge_Math"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
-        return result + '<table><td width = "40%"><h3>Устный счет.' + Header+ '</h3></td><td  width = "20%" align="right" >' + getCombo()+'</td><td  width = "10%" align="right" ><h3>' + getScore() +'</h3></td></table>' ;
-    };
 
     function getQuestion(text){
-        var result = ' <table class = "Challenge_Question_Table" ><tr ><td style="padding: 5px 10px 5px 5px; ">';
-        result += '<div  class = "Challenge_Question"  id = ' + 'Question_' + UID + '>' + text + '</div>';
-        result += '</td><td align="right"  style="padding: 5px 10px 5px 5px;"><SPAN  class = "Challenge_Answer_Text"> Введите ответ и нажмите Enter:</SPAN><input class = "Challenge_Answer" id = "' + 'In_' + UID + '" type="text"/></td></tr> </table>';
+        var result = '<div id = Challenge_' + UID + ' class="Challenge_Math">';
+        result += '<table  style="width:80%" class = "Challenge_Question_Table" border="0" >';
+        result += '<tr>';
+            result += '<td style="width:60%">';
+                result += '<table style="width:100%" class = "Challenge_Question_Table" border="0" >';
+                    result += '<tr>';
+                        result += '<td><h3>Устный счет.' + Header+ '</h3></td>';
+                        result += '</tr><tr>';
+                        result += '<td><div  class = "Challenge_Question"  id = ' + 'Question_' + UID + '>' + text + '</div></td>';
+                        result += '</tr><tr>';
+                        result += '<td><div  class = "Challenge_Old_Question" id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div></td>';
+                    result += '</tr>';
+                result += '</table>' ;
+            result += '</td>';
+            result += '<td style="width:30%">';
+//                result += '<table style="width:100%"  class = "Challenge_Question_Table" border="0" >';
+  //                  result += '<tr>';
+                        //result += '<td>' + getCombo()+'</td>';
+                        //result += '</tr><tr>';
+                        result += getCombo()+'<div class = "Challenge_Answer_Text"> Введите ответ и нажмите Enter:</div><input style ="display:inline-block" type="text" value = "0" id = "In_' + UID + '" class = "Challenge_Answer"/>';
+                    //result += '</tr>';
+                //result += '</table>' ;
+            result += '</td>';
+            result += '<td style="width:10%">';
+                result += '<table style="width:100%"  class = "Challenge_Question_Table" border="0" >';
+                    result += '<tr>';
+                        result += '<td><h3>' + getScore() +'</h3></td>';
+                    result += '</tr>';
+                result += '</table>' ;
+            result += '</td>';
+        result += '</tr>';
+
+         result += '</table></div>' ;
         return result;
     };
 
-    function getEnd(){
-        var result = '<div  class = "Challenge_Old_Question" id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div>';
-        result += '</div>';
-        return result;
-    };
     function verifyAnswer(){
         var currentTime = new Date();
         var delay = currentTime - lastTime;
@@ -322,6 +331,20 @@ function MathChallenge(_limit) {
                 Combo = 0;
             bonus = 1 + Combo * 2; 
             Score += bonus;
+            timeBar.setValue(delayLimit);
+            window.clearInterval(timerId);
+            timerId = window.setInterval(function() {
+
+            if (timeBar.value <= 0){
+                    window.clearInterval(timerId);
+                    comboBar.setValue(0);
+            } else {
+                    timeBar.setValue(timeBar.value - delayLimit/10);
+            }
+
+        }, delayLimit/10);
+            
+
         }
         else{
             elChallenge.style.backgroundColor = '#FFF5EE';
@@ -369,7 +392,9 @@ function MathChallenge(_limit) {
         elScore         = document.getElementById( 'Score_'    + UID);
         
         elComboBar         = document.getElementById( 'Combo_Bar_' + UID);
-        elComboBar.style.position = 'inline-block';
+        elComboBar.style.display = 'inline-block';
+        elTimeBar         = document.getElementById( 'Time_Bar_' + UID);
+        elTimeBar.style.display = 'inline-block';
         
         comboBar = new ProgressBar('Combo_Bar_' + UID ,{
                 borderRadius: 10,
@@ -387,6 +412,26 @@ function MathChallenge(_limit) {
                 imageUrl: 'images/h_fg202.png',
                 backgroundUrl: 'images/h_bg3.png'
             });
+            
+        timeBar = new ProgressBar('Time_Bar_' + UID ,{
+                borderRadius: 10,
+                width: 200,
+                height: 20,
+                value: 0,
+                maxValue: delayLimit,
+                showLabel: false,
+                extraClassName: {
+                        wrapper: 'my_progress_bar_wrapper'
+                },
+                orientation: ProgressBar.Orientation.Horizontal,
+                direction: ProgressBar.Direction.LeftToRight,
+                animationInterval: 50,
+                imageUrl: 'images/h_fg202.png',
+                backgroundUrl: 'images/h_bg3.png'
+            });
+            
+                        
+
 
     };
 
@@ -419,9 +464,7 @@ function MathChallenge(_limit) {
             }
         
         var randomQuestion = getRandomQuestion();
-        var result =  getHeader();
-        result += getQuestion(randomQuestion.toString());
-        result += getEnd(OldQuestion);
+        var result = getQuestion(randomQuestion.toString());
         return result;
     };
 
