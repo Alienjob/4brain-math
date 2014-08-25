@@ -287,25 +287,25 @@ function MathChallenge(_limit) {
                     result += '<tr>';
                         result += '<td><h3>Устный счет.' + Header+ '</h3></td>';
                         result += '</tr><tr>';
-                        result += '<td><div  class = "Challenge_Question"  id = ' + 'Question_' + UID + '>' + text + '</div></td>';
+                        result += '<td><div  class = "Challenge_Question"  id = ' + 'Question_' + UID + '><h3>' + text + '</h3></div></td>';
                         result += '</tr><tr>';
                         result += '<td><div  class = "Challenge_Old_Question" id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div></td>';
                     result += '</tr>';
                 result += '</table>' ;
             result += '</td>';
             result += '<td style="width:30%">';
-//                result += '<table style="width:100%"  class = "Challenge_Question_Table" border="0" >';
-  //                  result += '<tr>';
-                        //result += '<td>' + getCombo()+'</td>';
-                        //result += '</tr><tr>';
-                        result += getCombo()+'<div class = "Challenge_Answer_Text"> Введите ответ и нажмите Enter:</div><input style ="display:inline-block" type="text" value = "0" id = "In_' + UID + '" class = "Challenge_Answer"/>';
-                    //result += '</tr>';
-                //result += '</table>' ;
+                result += '<table style="width:100%"  class = "Challenge_Question_Table" border="0" >';
+                    result += '<tr>';
+                        result += '<td>' + getCombo()+'</td>';
+                        result += '</tr><tr>';
+                        result += '<div class = "Challenge_Answer_Text"> Введите ответ и нажмите Enter:</div><input style ="display:inline-block" type="text" value = "0" id = "In_' + UID + '" class = "Challenge_Answer"/>';
+                    result += '</tr>';
+                result += '</table>' ;
             result += '</td>';
             result += '<td style="width:10%">';
                 result += '<table style="width:100%"  class = "Challenge_Question_Table" border="0" >';
                     result += '<tr>';
-                        result += '<td><h3>' + getScore() +'</h3></td>';
+                        result += '<td><h2>' + getScore() +'</h2></td>';
                     result += '</tr>';
                 result += '</table>' ;
             result += '</td>';
@@ -363,7 +363,7 @@ function MathChallenge(_limit) {
     }
     function disable(){
         elIn.disabled = true;
-        elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня.';
+        elQuestion.innerHTML = '<h3>Вы достаточно упражнялись в ' + Header + ' сегодня.</h3>';
     }
     function refreshScore(){
         if (bonus > 0)
@@ -381,7 +381,7 @@ function MathChallenge(_limit) {
         refreshScore();
         elOldQuestion.innerHTML = Question.toString() + " = " + Question.call() + " / ваш ответ " + elIn.value + ".";
         Question = getRandomQuestion();
-        elQuestion.innerHTML = Question.toString();
+        elQuestion.innerHTML = '<h3>' +  Question.toString() + '</h3>';
         elIn.value = "";
         if (flDisabled)
             disable();
