@@ -250,42 +250,42 @@ function MathChallenge(_limit) {
     };
 
     function getScore(){
-        var result = ' <SPAN id = Score_' + UID +' > ';
+        var result = ' <SPAN class = "Challenge_score" id = Score_' + UID +' > ';
         result+= Score;
         result+='</SPAN>';
         return result;
     };
 
     function getCombo(){
-        var result = ' <SPAN id = Combo_' + UID +' > ';
-        result+= '<SPAN id = Combo1_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo2_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo3_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo4_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo5_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo6_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo7_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo8_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo9_'  + UID +' >' + 0 + '</SPAN>';
-        result+= '<SPAN id = Combo10_' + UID +' >' + 0 + '</SPAN>';
+        var result = ' <SPAN class = "Challenge_combo_line" id = Combo_' + UID +' > ';
+        result+= '<SPAN class = "Challenge_combo_null" id = Combo1_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo2_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo3_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo4_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo5_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo6_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo7_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo8_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo9_'  + UID +' >' + 0 + '</SPAN>';
+        result+= '<SPAN class = "Challenge_combo_null"  id = Combo10_' + UID +' >' + 0 + '</SPAN>';
         result+='</SPAN>';
         return result;
     };
 
     function getHeader(){
-        var result = ' <div id = Challenge_' + UID + ' class="MathChallenge"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
+        var result = ' <div id = Challenge_' + UID + ' class="Challenge_Math"><style> input{border:white; width:50px; height:20px;} .out-botton{color:green; text-align:center; padding:10px; cursor: pointer;} table{width:100%;} </style>';
         return result + '<table><td height = "2"><h3>Устный счет.' + Header+ '</h3></td><td  height = "2" align="right" ><h3>' + getCombo() + getScore() +'</h3></td></table>' ;
     };
 
     function getQuestion(text){
-        var result = ' <table><tr ><td style="padding: 5px 10px 5px 5px; ">';
-        result += '<div  id = ' + 'Question_' + UID + '>' + text + '</div>';
-        result += '</td><td align="right"  style="padding: 5px 10px 5px 5px;">Ваш ответ:<input id = "' + 'In_' + UID + '" type="text"/></td></tr> </table>';
+        var result = ' <table class = "Challenge_Question_Table" ><tr ><td style="padding: 5px 10px 5px 5px; ">';
+        result += '<div  class = "Challenge_Question"  id = ' + 'Question_' + UID + '>' + text + '</div>';
+        result += '</td><td align="right"  style="padding: 5px 10px 5px 5px;"><SPAN  class = "Challenge_Answer_Text"> Введите ответ и нажмите Enter:</SPAN><input class = "Challenge_Answer" id = "' + 'In_' + UID + '" type="text"/></td></tr> </table>';
         return result;
     };
 
     function getEnd(){
-        var result = '<div id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div>';
+        var result = '<div  class = "Challenge_Old_Question" id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div>';
         result += '</div>';
         return result;
     };
@@ -323,7 +323,7 @@ function MathChallenge(_limit) {
     }
     function disable(){
         elIn.disabled = true;
-        elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня. Чтобы разблокировать упражнение отправьте СМС с кодом .. или удалите cookie';
+        elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня.';
     }
     function refreshScore(){
         if (bonus > 0)
