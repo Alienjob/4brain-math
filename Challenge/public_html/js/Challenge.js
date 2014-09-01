@@ -138,7 +138,6 @@ function MathChallenge(_limit) {
     var elIn;
     var elOldQuestion;
     var elChallenge;
-    var elChallengeTable;
     var elScore;
     
     var elComboBar;
@@ -146,12 +145,12 @@ function MathChallenge(_limit) {
     var timerId;
  
     function comboBar(){
-        var result =  '<div  class = "Challenge_Combo_Bar" id="Combo_Bar_' + UID + '"></div>';
+        var result =  '<div  class = "scale" id="Combo_Bar_' + UID + '"></div>';
             return result;
     }
 
     function timeBar(){
-        var result =  '<div  class = "Challenge_Time_Bar" id="Time_Bar_' + UID + '"></div>';
+        var result =  '<div  class = "scale" id="Time_Bar_' + UID + '"></div>';
            return result;
     }
 
@@ -262,18 +261,19 @@ function MathChallenge(_limit) {
     };
 
     function getScore(){
-        var result = ' <div class = "Challenge_Score" id = Score_' + UID +' > ';
+        var result = ' <div class = "resut" id = Score_' + UID +' > ';
         result+= Score;
         result+='</div>';
         return result;
     };
 
     function getCombo(){
-        return timeBar() + comboBar();
+        return '<div>' + timeBar() + '</div><div>' + comboBar() + '</div>';
     };
 
 
     function getQuestion(text){
+        /*
         var result = '<div id = Challenge_' + UID + ' class="Challenge_Math">';
         result += '<table  style="width:800px" class = "Challenge_Question_Table" id = "Challenge_Question_Table_' + UID  + '">';
         result += '<tr>';
@@ -308,6 +308,20 @@ function MathChallenge(_limit) {
 
          result += '</table></div>' ;
         return result;
+        */
+       
+        var result = '<div id = Challenge_' + UID + ' class="challenge">';
+        
+        result += '<div  class = "Header">' + Header+ '</div>';
+        result += '<div  class = "Info"> Проверьте свои навыки устного счета с помощью специального тренажера. Для того чтобы пройти задание, вам нужно 10 раз подряд верно решить уравнение. Время решение каждого примера ограничено, следите за шкалой в левом верхнем углу. Чтобы вписать свой вариант ответа просто введите число в форму и нажмите enter. Результат показан в правом верхнем углу первое число означает ..., второе число ... .' + Header+ ' </div>';
+        result += getScore();
+        result += getCombo();
+        result += '<div  class = "vopros"  id = ' + 'Question_' + UID + '>' + text + '</div>';
+        result += '<div  class = "latest" id = "' + 'OldQuestion_' + UID + '">' + OldQuestion + '</div>';
+        result += '<input style ="display:inline-block" type="text" value = "0" id = "In_' + UID + '" class = "otvet"/>';
+
+        result += '</div>' ;
+        return result;
     };
 
     function verifyAnswer(){
@@ -319,7 +333,7 @@ function MathChallenge(_limit) {
         var currentAnswer = +elIn.value;
         
         if (rightAnswer === currentAnswer){
-            elChallengeTable.className = "Challenge_Question_Table_Green";
+            elChallenge.className = "challengeGreen";
             if (delay < delayLimit)
                 Combo += 1;
             else
@@ -342,12 +356,12 @@ function MathChallenge(_limit) {
 
         }
         else{
-            elChallengeTable.className = "Challenge_Question_Table_Red";
+            elChallenge.className = "challenge_Red";
             Combo = 0;
             bonus = 0;
         }
         if (Combo === 10)
-            alert('поздравляем, вы отлично справились с упражнением ' + Header);
+            alert('Поздравляем, вы отлично справились с упражнением ' + Header);
         
         if (Score > 100)
             disable();
@@ -359,17 +373,17 @@ function MathChallenge(_limit) {
     function disable(){
         elIn.disabled = true;
         elQuestion.innerHTML = 'Вы достаточно упражнялись в ' + Header + ' сегодня.';
-        elQuestion.className = 'Challenge_Question_Disable';
+        elQuestion.className = 'otvetDisable';
     }
     function refreshScore(){
         if (bonus > 0)
-            elScore.innerHTML = Score + '(+' + bonus + ')';
+            elScore.innerHTML = Score + ' (+' + bonus + ')';
         else
             elScore.innerHTML = Score;
             
         if (Score > MAXSCORE)
             flDisabled = true;
-        comboBar.labelText = Score + '(+' + bonus + ')';
+        comboBar.labelText = Score + ' (+' + bonus + ')';
         comboBar.setValue(200/10*Combo);
     }
     function refresh(){
@@ -437,13 +451,12 @@ function MathChallenge(_limit) {
         elIn            = document.getElementById( 'In_'          + UID);
         elOldQuestion   = document.getElementById( 'OldQuestion_' + UID);
         elChallenge       = document.getElementById( 'Challenge_'   + UID);
-        elChallengeTable  = document.getElementById( 'Challenge_Question_Table_'   + UID);
         findScore();
         
         elIn.onchange = refresh;
         
         if (Score > 0)
-            elChallengeTable.className = "Challenge_Question_Table_Green";
+            elChallenge.className = "challengeGreen";
         if (flDisabled)
             disable();
             
