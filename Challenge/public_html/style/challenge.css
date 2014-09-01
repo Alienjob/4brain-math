@@ -1,0 +1,87 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26.08.2014, 8:31:34
+    Author     : 1
+*/
+
+.Challenge_Math {
+}
+.Challenge_Question_Table {
+ //   border-width:5;
+ //   border-bottom: 2;
+ //   border-radius: 5;
+ //   border-style: solid;
+    background-color: #F0F0F0;
+}
+.Challenge_Question_Table_Green {
+//    border-width:5;
+//    border-bottom: 2;
+//    border-radius: 5;
+//    border-style: solid;
+    background-color: #F0FFF0;
+    
+}
+.Challenge_Question_Table_Red {
+//    border-width:5;
+//    border-bottom: 2;
+//    border-radius: 5;
+//    border-style: solid;
+    background-color: #FFF5EE;
+    
+}
+.Challenge_Left_Table {
+}
+.Challenge_Middle_Table {
+    border-width:2;
+    border-bottom: 2;
+    border-radius: 5;
+    border-style: solid;
+}
+.Challenge_Right_Table {
+}
+.Challenge_Question {
+    font-size: 30px;
+    font-weight: bold;
+}
+.Challenge_Question_Disable {
+    margin: 8;
+    font-size: 15px;
+}
+.Challenge_Old_Question {
+    font-size: 15px;
+    color : #5E5E5E;
+    font-style: italic;
+}
+.Challenge_Answer_Text {
+    font-size: 15px;
+    color : #5E5E5E;
+    font-style: italic;
+}
+.Challenge_Answer {
+}
+.Challenge_Score {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: right;
+    margin: 10px;
+}
+.Challenge_Combo_Bar {
+}
+.Challenge_Time_Bar {
+}
+.Challenge_Header {
+    font-size: 20px;
+}
+.challenge {background:whitesmoke; padding:15px; width:90%; max-width:500px; margin:10px auto; text-align:center;}
+.challengeGreen {background:#F0FFF0; padding:15px; width:90%; max-width:500px; margin:10px auto; text-align:center;}
+.challengeRed {background:#FFF5EE; padding:15px; width:90%; max-width:500px; margin:10px auto; text-align:center;}
+.challenge .resut {float:right;}
+.challenge .scale {float:left;}
+.challenge .vopros {font-size:30px; paddin:10px;}
+.challenge .otvet input {display:block; width:200px; height:30px; font-size:20px; margin:10px auto; text-align:center;}
+.challenge .otvetDisable input {display:block; width:200px; height:30px; font-size:20px; margin:10px auto; text-align:center;}
+.challenge .latest
