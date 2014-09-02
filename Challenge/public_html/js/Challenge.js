@@ -1,4 +1,3 @@
-
 //служебные функции
 var readyList = [];
 function onReady(handler) {
