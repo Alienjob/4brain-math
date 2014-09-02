@@ -356,7 +356,7 @@ function MathChallenge(_limit) {
 
         }
         else{
-            elChallenge.className = "challenge_Red";
+            elChallenge.className = "challengeRed";
             Combo = 0;
             bonus = 0;
         }
